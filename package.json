@@ -1,0 +1,53 @@
+{
+  "name": "mongodb-local-data-api",
+  "version": "0.0.0",
+  "description": "Run your own version of the MongoDB Atlas Data API.",
+  "type": "module",
+  "module": "dist/index.js",
+  "unpkg": "dist/index.min.js",
+  "main": "dist/index.cjs",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "uvu src",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saibotsivad/mongodb-local-data-api.git"
+  },
+  "keywords": [
+    "mongodb",
+    "atlas",
+    "dataapi"
+  ],
+  "author": {
+    "name": "Tobias Davis",
+    "email": "tobias@davistobias.com",
+    "url": "https://davistobias.com"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/saibotsivad/mongodb-local-data-api/issues"
+  },
+  "homepage": "https://github.com/saibotsivad/mongodb-local-data-api",
+  "devDependencies": {
+    "@saibotsivad/eslint-config-saibotsivad": "*",
+    "@saibotsivad/mongodb": "^0.0.8",
+    "httpie": "^1.1.2"
+  },
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-router": "^10.1.1",
+    "mongodb": "^4.3.1",
+    "mri": "^1.2.0",
+    "sade": "^1.8.1"
+  }
+}
