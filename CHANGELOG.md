@@ -25,5 +25,6 @@ Change categories are:
 ## [0.0.0](https://github.com/saibotsivad/mongodb-local-data-api/tree/v0.0.0) - 2021-01-26
 ### Added
 - Created the base project from [saibotsivad/init](https://github.com/saibotsivad/init).
+- First pass at making it an accurate copy of the existing Data API, warts and all.
 
 [0.0.1]: https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.0...v0.0.1
