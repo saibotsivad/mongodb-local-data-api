@@ -24,7 +24,10 @@ const actionValidation = {
 
 const specialAction = {
 	aggregate: (coll, params) => coll.aggregate(params.pipeline || []),
-	find: (coll, params) => coll.find(params).toArray().then(documents => ({ documents })),
+	find: (coll, params) => {
+		const { filter, ...remaining } = params
+		return coll.find(filter, remaining || {}).toArray().then(documents => ({ documents }))
+	},
 	findOne: (coll, params) => coll.findOne(params).then(document => ({ document })),
 	insertMany: async (coll, params) => {
 		const { documents, ...remaining } = params
