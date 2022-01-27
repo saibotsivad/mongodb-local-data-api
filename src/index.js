@@ -31,6 +31,7 @@ const specialAction = {
 		const { insertedIds } = await coll.insertMany(documents, remaining)
 		return { insertedIds: Object.values(insertedIds).map(o => o.toString()) }
 	},
+	insertOne: async (coll, params) => coll.insertOne(params.document),
 	replaceOne: async (coll, params) => {
 		const { filter, replacement, ...remaining } = params
 		const { matchedCount, modifiedCount, upsertedId } = await coll.replaceOne(filter, replacement, remaining)

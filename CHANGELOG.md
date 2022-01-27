@@ -22,6 +22,10 @@ Change categories are:
 ### Removed
 ### Security
 
+## [0.0.2](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.1...v0.0.2)
+### Fixed
+- The `insertOne` operation was incorrect.
+
 ## [0.0.1](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.0...v0.0.1)
 ### Fixed
 - Docs for options were incomplete.
