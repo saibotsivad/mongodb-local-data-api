@@ -35,13 +35,19 @@ const { status, body } = await database('insertOne', {
 
 ## Options
 
-These are the options you can pass during setup:
+These are the options you can pass to the `setup` function:
 
-- `url: String` - TODO
+- `url: String` - The fully qualified URL to the MongoDB instance. This would look like `mongodb://AzureDiamond:hunter2@localhost:27017` or similar. If you set this property, the remaining MongoDB options will be ignored.
+- `username: String` - The username to access the MongoDB instance.
+- `password: String` - The password to access the MongoDB instance.
+- `dbDomain: String` - The domain of the MongoDB instance. (Default: `localhost`)
+- `dbPort: Integer` - The port of the MongoDB instance. (Default: `27017`)
 
-The options you can pass to the CLI are the same as the above, and include these additional options:
+The options you can pass to the CLI are the same as above, but include these options:
 
-- `apiPort: Integer` - The port for the local Data API server.
+- `apiPort: Integer` - The port used to access this Data API instance. (Default: `3007`)
+
+For the CLI tool, all options can also be set using the environment variable version instead, which is simply the prefix `MONGODBLOCAL_` followed by the option name, e.g. `MONGODBLOCAL_URL`. The environment variable is case-insensitive, so e.g. `MongoDBLocal_url` would also work.
 
 ## License
 
