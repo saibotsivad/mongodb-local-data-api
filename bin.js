@@ -39,7 +39,7 @@ sade('mongodb-local-data-api', true)
 	.option('--url', 'The complete MongoDB URL, e.g. `mongodb://AzureDiamond:hunter2@localhost:27017`. If set, this will override all other related properties.')
 	.option('--username', 'The MongoDB username, e.g. `AzureDiamond`.')
 	.option('--password', 'The MongoDB password, e.g. `hunter2`.')
-	.option('--dbDomain', 'Change the port used to connect to MongoDB.', 'localhost')
+	.option('--dbDomain', 'Change the port used to connect to MongoDB. (Default: localhost)')
 	.option('--dbPort', 'Change the port used to connect to MongoDB. (Default: 27017)')
 	.option('--key', 'The API key to require on all requests. The default is no authentication required. Set the flag multiple times for multiple keys.')
 	.option('--verbose', 'If this flag is set, all request and response bodies will also be logged.')
@@ -49,6 +49,7 @@ sade('mongodb-local-data-api', true)
 		if (!Array.isArray(keys)) keys = keys ? [ keys ] : []
 		if (!apiPort) apiPort = 3007
 		if (!dbPort) dbPort = 27017
+		if (!dbDomain) dbDomain = 'localhost'
 		if (!url) url = `mongodb://${username}:${password}@${dbDomain}:${dbPort}`
 		const database = setup({ url })
 		const app = new Koa()

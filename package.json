@@ -3,20 +3,10 @@
   "version": "0.0.0",
   "description": "Run your own version of the MongoDB Atlas Data API.",
   "type": "module",
-  "module": "dist/index.js",
-  "unpkg": "dist/index.min.js",
-  "main": "dist/index.cjs",
-  "types": "index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "src/index.js",
+  "bin": "./bin.js",
   "scripts": {
-    "test": "uvu src",
-    "lint": "eslint"
+    "test": "eslint"
   },
   "repository": {
     "type": "git",
@@ -25,7 +15,8 @@
   "keywords": [
     "mongodb",
     "atlas",
-    "dataapi"
+    "dataapi",
+    "data-api"
   ],
   "author": {
     "name": "Tobias Davis",
@@ -47,7 +38,6 @@
     "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
     "mongodb": "^4.3.1",
-    "mri": "^1.2.0",
     "sade": "^1.8.1"
   }
 }
