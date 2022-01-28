@@ -42,6 +42,8 @@ These are the options you can pass to the `setup` function:
 - `password: String` - The password to access the MongoDB instance.
 - `dbDomain: String` - The domain of the MongoDB instance. (Default: `localhost`)
 - `dbPort: Integer` - The port of the MongoDB instance. (Default: `27017`)
+- `retryCount: Integer` - By default if connections to MongoDB will be retried indefinitely if interrupted. Set to `0` to disable, or set to a limit. (Default: `Infinity`)
+- `verbose: Boolean` - Whether to print out additional information to the console. (Default: `false`)
 
 The options you can pass to the CLI are the same as above, but include these options:
 

@@ -22,6 +22,13 @@ Change categories are:
 ### Removed
 ### Security
 
+## [0.0.4](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.3...v0.0.4) - 2022-01-28
+### Added
+- If the connection to MongoDB gets dropped, it'll try to reconnect. You can control the number of times using the `retryCount` option.
+### Fixed
+- Added the `verbose` option to the docs.
+- Corrected the examples for `sade`.
+
 ## [0.0.2-0.0.3](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.1...v0.0.3) - 2022-01-27
 ### Fixed
 - The `insertOne` and `find` operations were incorrect.

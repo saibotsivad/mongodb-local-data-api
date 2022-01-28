@@ -77,26 +77,49 @@ const tidyResults = (actionName, body) => {
 	return body && endpointsThatIncorrectlyReturnText.includes(actionName) ? JSON.stringify(body) : body
 }
 
-export const setup = ({ url }) => {
+export const setup = ({ url, verbose, retryCount }) => {
 	const databaseToConnection = {}
 	return async (actionName, { dataSource, database, collection, ...params }) => {
-		if (dataSource) console.log('The property `dataSource` is currently ignored for local databases.', dataSource)
+		if (dataSource && verbose) console.log('The property `dataSource` is currently ignored for local databases.', dataSource)
 		if (actionName === 'aggregate') return { status: 500, body: 'The "aggregate" function is not yet implemented in the local Data API.' }
 		if (!supportedActions.includes(actionName)) return { status: 404, body: '' }
 
 		const validationError = actionValidation[actionName] && actionValidation[actionName](params)
 		if (validationError) return validationError
 
-		if (!databaseToConnection[database]) {
-			console.log(`New connection to "${database}" database.`)
-			const client = new MongoClient(url)
-			await client.connect()
-			databaseToConnection[database] = client.db(database)
+		let running
+		const run = async () => {
+			if (!databaseToConnection[database]) {
+				console.log(`Attempting to connect to: ${database}`)
+				const client = new MongoClient(url)
+				await client.connect()
+				databaseToConnection[database] = client.db(database)
+			}
+			const coll = databaseToConnection[database].collection(collection)
+			const results = await (specialAction[actionName] ? specialAction[actionName](coll, params) : coll[actionName](params))
+			running = true
+			return {
+				status: actionName.startsWith('insert') ? 201 : 200,
+				body: tidyResults(actionName, results),
+			}
 		}
-		const coll = databaseToConnection[database].collection(collection)
-		return {
-			status: actionName.startsWith('insert') ? 201 : 200,
-			body: tidyResults(actionName, await (specialAction[actionName] ? specialAction[actionName](coll, params) : coll[actionName](params))),
+
+		try {
+			return await run()
+		} catch (error1) {
+			if (error1.message.includes('ECONNREFUSED')) {
+				console.log('Connection to MongoDB was interrupted, trying again...')
+				let retries = 1
+				while (!running && (retries < retryCount || retryCount === undefined)) {
+					try {
+						return await run()
+					} catch (error2) {
+						if (!error2.message.includes('ECONNREFUSED')) throw error2
+						console.log(`Reconnect retry ${++retries} of ${retryCount === undefined ? '∞' : retryCount}...`)
+					}
+				}
+			}
+			throw error1
 		}
 	}
 }
