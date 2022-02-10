@@ -28,7 +28,10 @@ const specialAction = {
 		const { filter, ...remaining } = params
 		return coll.find(filter, remaining || {}).toArray().then(documents => ({ documents }))
 	},
-	findOne: (coll, params) => coll.findOne(params).then(document => ({ document })),
+	findOne: (coll, params) => {
+		const { filter, ...remaining } = params
+		return coll.findOne(filter, remaining).then(document => ({ document }))
+	},
 	insertMany: async (coll, params) => {
 		const { documents, ...remaining } = params
 		const { insertedIds } = await coll.insertMany(documents, remaining)
@@ -119,7 +122,11 @@ export const setup = ({ url, verbose, retryCount }) => {
 					}
 				}
 			}
-			throw error1
+			console.log('Error handling request:', error1.message)
+			return {
+				status: 400,
+				body: error1.message,
+			}
 		}
 	}
 }

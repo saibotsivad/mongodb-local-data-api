@@ -22,6 +22,10 @@ Change categories are:
 ### Removed
 ### Security
 
+## [0.0.6](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.5...v0.0.6) - 2022-02-10
+### Fixed
+- The `findOne` method being called incorrectly. 🤦‍♂️ I hadn't noticed until now because I so rarely use that specific method.
+
 ## [0.0.4-0.0.5](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.3...v0.0.5) - 2022-01-28
 ### Added
 - If the connection to MongoDB gets dropped, it'll try to reconnect. You can control the number of times using the `retryCount` option.
