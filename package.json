@@ -1,6 +1,6 @@
 {
   "name": "mongodb-local-data-api",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Run your own version of the MongoDB Atlas Data API.",
   "type": "module",
   "main": "src/index.js",
