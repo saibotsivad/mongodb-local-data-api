@@ -101,6 +101,7 @@ export const setup = ({ url, verbose, retryCount }) => {
 			const results = await (specialAction[actionName] ? specialAction[actionName](coll, params) : coll[actionName](params))
 			running = true
 			return {
+				count: results?.documents?.length,
 				status: actionName.startsWith('insert') ? 201 : 200,
 				body: tidyResults(actionName, results),
 			}

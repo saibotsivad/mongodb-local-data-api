@@ -73,12 +73,13 @@ sade('mongodb-local-data-api', true)
 					}
 				} else {
 					await database(action, context.request.body)
-						.then(({ status, body }) => {
+						.then(({ status, body, count }) => {
 							context.status = status
 							context.body = body
-							if (body?.documents?.length > 1000) console.error(requestId, new Date(), `${action} => ${status}`, `[ERROR: Returned Objects has gone above 1000: ${body.documents.length}]`)
-							else if (body?.documents?.length) console.log(requestId, new Date(), `${action} => ${status}`, `[Returned Objects: ${body.documents.length}]`)
-							else console.log(requestId, new Date(), `${action} => ${status}`)
+							let message = `action: ${action}; status: ${status}`
+							if (count) message += `; documents: ${count}`
+							console.log(requestId, new Date(), message)
+							if (count > 1000) console.error(requestId, new Date(), 'Error: Returned Objects has gone above 1000.', context.request.body)
 							if (verbose) console.log(body)
 						})
 						.catch(error => {

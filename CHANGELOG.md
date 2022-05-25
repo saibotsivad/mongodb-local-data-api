@@ -22,11 +22,11 @@ Change categories are:
 ### Removed
 ### Security
 
-## [0.0.7](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.6...v0.0.7) - 2022-05-25
+## [0.0.7-0.0.8](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.6...v0.0.8) - 2022-05-25
 ### Added
 - If scanned results is over 1000, will log an error. (This more closely matches the behaviour of MongoDB Atlas.)
 ### Changed
-- Log output without the `--verbose` flag is cleaner.
+- Log output with and without the `--verbose` flag is cleaner.
 
 ## [0.0.6](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.5...v0.0.6) - 2022-02-10
 ### Fixed
