@@ -74,7 +74,6 @@ const endpointsThatIncorrectlyReturnText = [
 ]
 
 const tidyResults = (actionName, body) => {
-	console.log(actionName, body)
 	if (body && body.acknowledged) delete body.acknowledged
 	if (body && body.insertedCount) delete body.insertedCount
 	return body && endpointsThatIncorrectlyReturnText.includes(actionName) ? JSON.stringify(body) : body
@@ -83,7 +82,7 @@ const tidyResults = (actionName, body) => {
 export const setup = ({ url, verbose, retryCount }) => {
 	const databaseToConnection = {}
 	return async (actionName, { dataSource, database, collection, ...params }) => {
-		if (dataSource && verbose) console.log('The property `dataSource` is currently ignored for local databases.', dataSource)
+		if (dataSource && verbose) console.warn('The property `dataSource` is currently ignored for local databases.')
 		if (actionName === 'aggregate') return { status: 500, body: 'The "aggregate" function is not yet implemented in the local Data API.' }
 		if (!supportedActions.includes(actionName)) return { status: 404, body: '' }
 

@@ -62,8 +62,7 @@ sade('mongodb-local-data-api', true)
 			.post('/action/:action', koaBody(), async context => {
 				const action = context.request.params.action
 				const requestId = (++requestCounter).toString().padStart(4, '0')
-				console.log(requestId, new Date(), action)
-				if (verbose) console.log(context.request.body)
+				if (verbose) console.log(requestId, new Date(), action, context.request.body)
 				if (keys.length && !keys.includes(context.request.headers['api-key'])) {
 					console.log(requestId, new Date(), 'Provided API key was not authorized:', context.request.headers['api-key'])
 					context.status = 401
@@ -77,7 +76,9 @@ sade('mongodb-local-data-api', true)
 						.then(({ status, body }) => {
 							context.status = status
 							context.body = body
-							console.log(requestId, new Date(), `${action} => ${status}`)
+							if (body?.documents?.length > 1000) console.error(requestId, new Date(), `${action} => ${status}`, `[ERROR: Returned Objects has gone above 1000: ${body.documents.length}]`)
+							else if (body?.documents?.length) console.log(requestId, new Date(), `${action} => ${status}`, `[Returned Objects: ${body.documents.length}]`)
+							else console.log(requestId, new Date(), `${action} => ${status}`)
 							if (verbose) console.log(body)
 						})
 						.catch(error => {
