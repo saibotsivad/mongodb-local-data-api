@@ -22,6 +22,10 @@ Change categories are:
 ### Removed
 ### Security
 
+## [0.0.9](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.8...v0.0.9) - 2022-07-13
+### Fixed
+- The `deleteMany` was being called incorrectly.
+
 ## [0.0.7-0.0.8](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.6...v0.0.8) - 2022-05-25
 ### Added
 - If scanned results is over 1000, will log an error. (This more closely matches the behaviour of MongoDB Atlas.)
