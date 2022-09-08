@@ -23,7 +23,7 @@ const actionValidation = {
 }
 
 const specialAction = {
-	aggregate: (coll, params) => coll.aggregate(params.pipeline || []).toArray(),
+	aggregate: (coll, params) => coll.aggregate(params.pipeline || []).toArray().then(documents => ({ documents })),
 	deleteMany: (coll, params) => {
 		const { filter, ...remaining } = params
 		return coll.deleteMany(filter || {}, remaining || {})
