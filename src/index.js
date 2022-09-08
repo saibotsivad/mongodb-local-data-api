@@ -23,7 +23,7 @@ const actionValidation = {
 }
 
 const specialAction = {
-	aggregate: (coll, params) => coll.aggregate(params.pipeline || []),
+	aggregate: (coll, params) => coll.aggregate(params.pipeline || []).toArray(),
 	deleteMany: (coll, params) => {
 		const { filter, ...remaining } = params
 		return coll.deleteMany(filter || {}, remaining || {})
@@ -87,7 +87,6 @@ export const setup = ({ url, verbose, retryCount }) => {
 	const databaseToConnection = {}
 	return async (actionName, { dataSource, database, collection, ...params }) => {
 		if (dataSource && verbose) console.warn('The property `dataSource` is currently ignored for local databases.')
-		if (actionName === 'aggregate') return { status: 500, body: 'The "aggregate" function is not yet implemented in the local Data API.' }
 		if (!supportedActions.includes(actionName)) return { status: 404, body: '' }
 
 		const validationError = actionValidation[actionName] && actionValidation[actionName](params)
@@ -113,23 +112,23 @@ export const setup = ({ url, verbose, retryCount }) => {
 
 		try {
 			return await run()
-		} catch (error1) {
-			if (error1.message.includes('ECONNREFUSED')) {
+		} catch (firstRunError) {
+			if (firstRunError.message.includes('ECONNREFUSED')) {
 				console.log('Connection to MongoDB was interrupted, trying again...')
 				let retries = 1
 				while (!running && (retries < retryCount || retryCount === undefined)) {
 					try {
 						return await run()
-					} catch (error2) {
-						if (!error2.message.includes('ECONNREFUSED')) throw error2
+					} catch (retryError) {
+						if (!retryError.message.includes('ECONNREFUSED')) throw retryError
 						console.log(`Reconnect retry ${++retries} of ${retryCount === undefined ? '∞' : retryCount}...`)
 					}
 				}
 			}
-			console.log('Error handling request:', error1.message)
+			console.log('Error handling request:', firstRunError.message)
 			return {
 				status: 400,
-				body: error1.message,
+				body: firstRunError.message,
 			}
 		}
 	}

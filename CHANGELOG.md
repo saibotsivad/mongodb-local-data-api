@@ -22,6 +22,10 @@ Change categories are:
 ### Removed
 ### Security
 
+## [0.0.10](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.9...v0.0.10) - 2022-09-08
+### Fixed
+- The `aggregate` function was being called incorrectly.
+
 ## [0.0.9](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.8...v0.0.9) - 2022-07-13
 ### Fixed
 - The `deleteMany` was being called incorrectly.
