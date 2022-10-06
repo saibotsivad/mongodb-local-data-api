@@ -22,6 +22,10 @@ Change categories are:
 ### Removed
 ### Security
 
+## [1.0.0](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.11...v1.0.0) - 2022-10-06
+### Changed
+- The endpoints that previously returned `Content-Type: text/plain` from the **beta** version of the Data API have been updated to correctly return `application/json` so this library does as well. Closes #1
+
 ## [0.0.10-0.0.11](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.9...v0.0.11) - 2022-09-08
 ### Fixed
 - The `aggregate` function was being called incorrectly.

@@ -65,22 +65,10 @@ const specialAction = {
 	},
 }
 
-const endpointsThatIncorrectlyReturnText = [
-	'deleteOne',
-	'deleteMany',
-	'find',
-	'findOne',
-	'insertOne',
-	'insertMany',
-	'replaceOne',
-	'updateOne',
-	'updateMany',
-]
-
 const tidyResults = (actionName, body) => {
 	if (body && body.acknowledged) delete body.acknowledged
 	if (body && body.insertedCount) delete body.insertedCount
-	return body && endpointsThatIncorrectlyReturnText.includes(actionName) ? JSON.stringify(body) : body
+	return body && JSON.stringify(body)
 }
 
 export const setup = ({ url, verbose, retryCount }) => {
