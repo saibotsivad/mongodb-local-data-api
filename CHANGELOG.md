@@ -24,7 +24,7 @@ Change categories are:
 
 ## [1.0.0](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.11...v1.0.0) - 2022-10-06
 ### Added
-- Documentation to show plain `cURL` interaction with the API, hopefully
+- Documentation to show plain `cURL` interaction with the API, and make the demo work better.
 ### Changed
 - The endpoints that previously returned `Content-Type: text/plain` from the **beta** version of the Data API have been updated to correctly return `application/json` so this library does as well. Closes #1
 

@@ -93,6 +93,7 @@ services:
     image: mongo:5.0
     ports:
       - "27017:27017"
+    # this is how you get MongoDB to stop spewing out so many logs
     command: mongod --quiet --logpath /dev/null
     environment:
       - MONGO_INITDB_ROOT_USERNAME=AzureDiamond

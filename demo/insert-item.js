@@ -1,18 +1,21 @@
-process.env.MONGODB_URL = 'http://localhost:3007'
-process.env.MONGODB_API_KEY = 'abc123'
-
 import { post } from 'httpie'
 import { mongodb } from '@saibotsivad/mongodb'
 
+import { setTimeout as delay } from 'node:timers/promises'
+await delay(1000) // artificial wait time until the local API starts
+
+const API_URL = 'http://localhost:9001'
+const API_KEY = 'abc123'
+
 /*
 
-You can call it manually, with a plain ol' HTTP request:
+You can call the locally running API manually, with a plain ol' HTTP request:
 
  */
-post(process.env.MONGODB_URL, {
+post(API_URL + '/action/insertOne', {
 	headers: {
 		'Content-Type': 'application/json',
-		'Api-Key': process.env.MONGODB_API_KEY,
+		'Api-Key': API_KEY,
 	},
 	body: JSON.stringify({
 		dataSource: 'Cluster0',
@@ -29,7 +32,7 @@ post(process.env.MONGODB_URL, {
 		})
 	})
 	.catch(error => {
-		console.log('bad req', {
+		console.log('bad request', {
 			status: error.statusCode,
 			type: error.headers['content-type'],
 			data: error.data,
@@ -37,33 +40,26 @@ post(process.env.MONGODB_URL, {
 	})
 
 /*
- A small shim to make `httpie` behave closer to `fetch`.
+ Ignore this, it's a small shim to make `httpie` behave closer to the `fetch` specs.
  */
 const postFetchShim = response => ({
 	status: response.statusCode,
-	json: async () => {
-		// There is a bug with the Data API where it returns the `Content-Type` header
-		// as `text/plain; charset=utf-8` and then `httpie` correctly translates the body
-		// to a string. I'm trying to raise an issue with the @MongoDBDev team, so I'll
-		// see if that gets anywhere...
-		if (typeof response.data === 'string' && response.data.startsWith('{')) return JSON.parse(response.data)
-		return response.data
-	},
+	json: async () => response.data,
 	text: async () => response.data,
 })
-
+const fetch = async (url, parameters) => post(url, parameters).then(postFetchShim, postFetchShim)
 /*
 
 You can also use handy dandy tooling to make it easier:
 
  */
 const db = mongodb({
-	apiUrl: process.env.MONGODB_URL,
-	apiKey: process.env.MONGODB_API_KEY,
-	cluster: 'Cluster0',
+	apiUrl: API_URL,
+	apiKey: API_KEY,
+	dataSource: 'Cluster0',
 	database: 'office',
 	collection: 'people',
-	fetch: async (url, parameters) => post(url, parameters).then(postFetchShim, postFetchShim),
+	fetch,
 })
 db
 	.insertOne({
