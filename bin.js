@@ -66,6 +66,7 @@ sade('mongodb-local-data-api', true)
 				if (keys.length && !keys.includes(context.request.headers['api-key'])) {
 					console.log(requestId, new Date(), 'Provided API key was not authorized:', context.request.headers['api-key'])
 					context.status = 401
+					context.headers['content-type'] = 'application/json'
 					context.body = {
 						error: 'invalid session: error finding user for endpoint',
 						error_code: 'InvalidSession',
@@ -76,6 +77,7 @@ sade('mongodb-local-data-api', true)
 						.then(({ status, body, count }) => {
 							context.status = status
 							context.body = body
+							if (typeof body !== 'string') context.headers['content-type'] = 'application/json'
 							let message = `action: ${action}; status: ${status}`
 							if (count) message += `; documents: ${count}`
 							console.log(requestId, new Date(), message)

@@ -68,7 +68,7 @@ const specialAction = {
 const tidyResults = (actionName, body) => {
 	if (body && body.acknowledged) delete body.acknowledged
 	if (body && body.insertedCount) delete body.insertedCount
-	return body && JSON.stringify(body)
+	return body
 }
 
 export const setup = ({ url, verbose, retryCount }) => {

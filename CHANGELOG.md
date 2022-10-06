@@ -22,11 +22,13 @@ Change categories are:
 ### Removed
 ### Security
 
-## [1.0.0](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.11...v1.0.0) - 2022-10-06
+## [1.0.1](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.11...v1.0.1) - 2022-10-06
 ### Added
 - Documentation to show plain `cURL` interaction with the API, and make the demo work better.
 ### Changed
 - The endpoints that previously returned `Content-Type: text/plain` from the **beta** version of the Data API have been updated to correctly return `application/json` so this library does as well. Closes #1
+### Fixed
+- The endpoints now enforce `application/json` a bit more strictly on outputs that return it.
 
 ## [0.0.10-0.0.11](https://github.com/saibotsivad/mongodb-local-data-api/compare/v0.0.9...v0.0.11) - 2022-09-08
 ### Fixed
