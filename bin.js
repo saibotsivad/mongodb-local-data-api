@@ -5,6 +5,8 @@ import sade from 'sade'
 import Koa from 'koa'
 import koaRouter from 'koa-router'
 import koaBody from 'koa-body'
+import buddy from 'co-body'
+import { EJSON } from 'bson'
 import { setup } from './src/index.js'
 
 const optionNames = [
@@ -62,7 +64,11 @@ sade('mongodb-local-data-api', true)
 			.post('/action/:action', koaBody(), async context => {
 				const action = context.request.params.action
 				const requestId = (++requestCounter).toString().padStart(4, '0')
-				if (verbose) console.log(requestId, new Date(), action, context.request.body)
+				let body = context.request.body
+				if (context.request.is('application/ejson')) {
+					body = EJSON.deserialize(await buddy.json(context))
+				}
+				if (verbose) console.log(requestId, new Date(), action, body)
 				if (keys.length && !keys.includes(context.request.headers['api-key'])) {
 					console.log(requestId, new Date(), 'Provided API key was not authorized:', context.request.headers['api-key'])
 					context.status = 401
@@ -73,15 +79,20 @@ sade('mongodb-local-data-api', true)
 						link: 'https://realm.mongodb.com/groups/611be2cf39b99f2a25556d10/apps/61df4d50cb330d69cb2b7822/logs?co_id=61f1c4aaa37cb8585dbdd69c',
 					}
 				} else {
-					await database(action, context.request.body)
+					await database(action, body)
 						.then(({ status, body, count }) => {
 							context.status = status
-							context.body = body
-							if (typeof body !== 'string') context.headers['content-type'] = 'application/json'
+							if (context.request.accepts('application/ejson')) {
+								context.body = EJSON.serialize(body)
+								context.headers['content-type'] = 'application/ejson'
+							} else {
+								context.body = body
+								if (typeof body !== 'string') context.headers['content-type'] = 'application/json'
+							}
 							let message = `action: ${action}; status: ${status}`
 							if (count) message += `; documents: ${count}`
 							console.log(requestId, new Date(), message)
-							if (count > 1000) console.error(requestId, new Date(), 'Error: Returned Objects has gone above 1000.', context.request.body)
+							if (count > 1000) console.error(requestId, new Date(), 'Error: Returned Objects has gone above 1000.', body)
 							if (verbose) console.log(body)
 						})
 						.catch(error => {
